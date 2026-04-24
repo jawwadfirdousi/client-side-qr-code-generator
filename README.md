@@ -29,7 +29,7 @@ Note: if you host the site on GitHub Pages or another static host, the host may 
 - Instant QR generation in the browser
 - Payload preview for every generated code
 - No backend required
-- GitHub Pages deployment workflow included
+- Published on GitHub Pages
 
 ## Tech Stack
 
@@ -37,7 +37,6 @@ Note: if you host the site on GitHub Pages or another static host, the host may 
 - CSS
 - Vanilla JavaScript
 - [`qrcode-generator`](https://www.npmjs.com/package/qrcode-generator)
-- GitHub Actions for Pages deployment
 
 ## Local Development
 
@@ -56,21 +55,6 @@ npm start
 The app runs locally at:
 
 `http://127.0.0.1:4173`
-
-## GitHub Pages Deployment
-
-This repo includes a GitHub Pages workflow at [.github/workflows/deploy-pages.yml](./.github/workflows/deploy-pages.yml).
-
-To deploy successfully:
-
-1. Push the repository to GitHub.
-2. Open `Settings` -> `Pages`.
-3. Under `Build and deployment`, set `Source` to `GitHub Actions`.
-4. Push to `main` or run the workflow manually.
-
-The expected published URL is:
-
-`https://jawwadfirdousi.github.io/client-side-qr-code-generator`
 
 ## Project Structure
 
