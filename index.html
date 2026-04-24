@@ -4,37 +4,67 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QR Studio</title>
-    <link rel="stylesheet" href="./styles.css?v=20260424" />
+    <link rel="stylesheet" href="./styles.css?v=20260424e" />
     <script defer src="./node_modules/qrcode-generator/dist/qrcode.js"></script>
-    <script defer src="./app.js?v=20260424"></script>
+    <script defer src="./app.js?v=20260424c"></script>
   </head>
   <body>
     <main class="app-shell">
       <section class="intro-panel">
         <p class="eyebrow">QR Studio</p>
-        <h1>Generate QR codes for websites and contact cards.</h1>
+        <h1>Generate QR codes for links, files, messages, and contact cards.</h1>
         <p class="intro-copy">
-          Switch between a direct website link and a vCard contact payload, then
-          render a scannable QR instantly in the browser.
+          Switch between direct links, text payloads, contact cards, and quick
+          actions like calls, email drafts, and SMS messages.
         </p>
+        <section class="privacy-story" aria-label="Privacy promise">
+          <p class="privacy-kicker">Private by default</p>
+          <p class="privacy-copy">
+            Every QR payload is generated directly in your browser. This app
+            does not submit your form data to a backend, set cookies, or load
+            analytics.
+          </p>
+          <p class="privacy-note">
+            Hosting providers may still keep standard request logs for page
+            visits, but the generator itself does not transmit the QR content
+            you create.
+          </p>
+        </section>
         <ul class="intro-list">
-          <li>Website mode normalizes links and generates a shareable URL QR.</li>
-          <li>Contact mode encodes your details as a vCard for phone scanners.</li>
+          <li>Build URL, PDF, app-link, and plain-text QR codes from one workspace.</li>
+          <li>Send people straight into calls, messages, email drafts, or saved contacts.</li>
         </ul>
       </section>
 
       <section class="workspace" aria-label="QR generator">
-        <div class="mode-switch" role="tablist" aria-label="Generator type">
+        <div class="privacy-banner" aria-label="Privacy summary">
+          <p class="privacy-banner-title">Private in-browser generator</p>
+          <p class="privacy-banner-copy">
+            No form submission. No cookies. No analytics. Your QR content stays in the page.
+          </p>
+        </div>
+        <div class="mode-switch" role="tablist" aria-label="QR code type">
           <button
             class="mode-button is-active"
-            id="website-tab"
+            id="url-tab"
             type="button"
             role="tab"
             aria-selected="true"
-            aria-controls="website-fields"
-            data-mode="website"
+            aria-controls="url-fields"
+            data-mode="url"
           >
-            Website
+            URL
+          </button>
+          <button
+            class="mode-button"
+            id="pdf-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="pdf-fields"
+            data-mode="pdf"
+          >
+            PDF
           </button>
           <button
             class="mode-button"
@@ -47,21 +77,77 @@
           >
             Contact
           </button>
+          <button
+            class="mode-button"
+            id="text-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="text-fields"
+            data-mode="text"
+          >
+            Plain Text
+          </button>
+          <button
+            class="mode-button"
+            id="app-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="app-fields"
+            data-mode="app"
+          >
+            App
+          </button>
+          <button
+            class="mode-button"
+            id="sms-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="sms-fields"
+            data-mode="sms"
+          >
+            SMS
+          </button>
+          <button
+            class="mode-button"
+            id="email-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="email-fields"
+            data-mode="email"
+          >
+            Email
+          </button>
+          <button
+            class="mode-button"
+            id="phone-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="phone-fields"
+            data-mode="phone"
+          >
+            Phone
+          </button>
         </div>
 
         <div class="workspace-grid">
           <form id="qr-form" class="generator-form" novalidate>
             <section
               class="field-group"
-              id="website-fields"
+              id="url-fields"
               role="tabpanel"
-              aria-labelledby="website-tab"
+              aria-labelledby="url-tab"
+              data-panel-mode="url"
             >
               <label class="field">
-                <span class="field-label">Website URL</span>
+                <span class="field-label">URL</span>
                 <input
-                  id="website-url"
-                  name="website-url"
+                  id="url-value"
+                  name="url-value"
                   type="text"
                   placeholder="example.com"
                   autocomplete="off"
@@ -75,9 +161,33 @@
 
             <section
               class="field-group"
+              id="pdf-fields"
+              role="tabpanel"
+              aria-labelledby="pdf-tab"
+              data-panel-mode="pdf"
+              hidden
+            >
+              <label class="field">
+                <span class="field-label">PDF URL</span>
+                <input
+                  id="pdf-url"
+                  name="pdf-url"
+                  type="text"
+                  placeholder="https://example.com/brochure.pdf"
+                  autocomplete="off"
+                />
+              </label>
+              <p class="field-hint">
+                Use a direct link to the PDF file you want people to open.
+              </p>
+            </section>
+
+            <section
+              class="field-group"
               id="contact-fields"
               role="tabpanel"
               aria-labelledby="contact-tab"
+              data-panel-mode="contact"
               hidden
             >
               <label class="field">
@@ -149,9 +259,144 @@
               </label>
             </section>
 
+            <section
+              class="field-group"
+              id="text-fields"
+              role="tabpanel"
+              aria-labelledby="text-tab"
+              data-panel-mode="text"
+              hidden
+            >
+              <label class="field">
+                <span class="field-label">Text to encode</span>
+                <textarea
+                  id="text-value"
+                  name="text-value"
+                  rows="6"
+                  placeholder="Drop in any text, note, code, or reference."
+                ></textarea>
+              </label>
+            </section>
+
+            <section
+              class="field-group"
+              id="app-fields"
+              role="tabpanel"
+              aria-labelledby="app-tab"
+              data-panel-mode="app"
+              hidden
+            >
+              <label class="field">
+                <span class="field-label">App link</span>
+                <input
+                  id="app-url"
+                  name="app-url"
+                  type="text"
+                  placeholder="myapp://open/home or https://apps.apple.com/app/..."
+                  autocomplete="off"
+                />
+              </label>
+              <p class="field-hint">
+                Use a custom app scheme, universal link, or store URL.
+              </p>
+            </section>
+
+            <section
+              class="field-group"
+              id="sms-fields"
+              role="tabpanel"
+              aria-labelledby="sms-tab"
+              data-panel-mode="sms"
+              hidden
+            >
+              <label class="field">
+                <span class="field-label">Phone number</span>
+                <input
+                  id="sms-phone"
+                  name="sms-phone"
+                  type="tel"
+                  placeholder="+49 1512 3456789"
+                  autocomplete="tel"
+                />
+              </label>
+              <label class="field">
+                <span class="field-label">Message</span>
+                <textarea
+                  id="sms-message"
+                  name="sms-message"
+                  rows="4"
+                  placeholder="Optional message body"
+                ></textarea>
+              </label>
+            </section>
+
+            <section
+              class="field-group"
+              id="email-fields"
+              role="tabpanel"
+              aria-labelledby="email-tab"
+              data-panel-mode="email"
+              hidden
+            >
+              <div class="field-row">
+                <label class="field">
+                  <span class="field-label">Recipient</span>
+                  <input
+                    id="email-address"
+                    name="email-address"
+                    type="email"
+                    placeholder="hello@example.com"
+                    autocomplete="email"
+                  />
+                </label>
+                <label class="field">
+                  <span class="field-label">Subject</span>
+                  <input
+                    id="email-subject"
+                    name="email-subject"
+                    type="text"
+                    placeholder="Quick follow-up"
+                    autocomplete="off"
+                  />
+                </label>
+              </div>
+              <label class="field">
+                <span class="field-label">Body</span>
+                <textarea
+                  id="email-body"
+                  name="email-body"
+                  rows="5"
+                  placeholder="Optional email body"
+                ></textarea>
+              </label>
+            </section>
+
+            <section
+              class="field-group"
+              id="phone-fields"
+              role="tabpanel"
+              aria-labelledby="phone-tab"
+              data-panel-mode="phone"
+              hidden
+            >
+              <label class="field">
+                <span class="field-label">Phone number</span>
+                <input
+                  id="phone-number"
+                  name="phone-number"
+                  type="tel"
+                  placeholder="+49 1512 3456789"
+                  autocomplete="tel"
+                />
+              </label>
+              <p class="field-hint">
+                Generates a tap-to-call QR code using the <code>tel:</code> scheme.
+              </p>
+            </section>
+
             <button class="generate-button" type="submit">Generate QR Code</button>
             <p class="status-message" id="status-message" role="status" aria-live="polite">
-              Ready for a website URL.
+              Ready for a URL.
             </p>
           </form>
 
