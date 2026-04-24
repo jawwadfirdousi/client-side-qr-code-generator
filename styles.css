@@ -1,0 +1,342 @@
+:root {
+  color-scheme: light;
+  --bg: #f4efe5;
+  --surface: rgba(255, 250, 242, 0.8);
+  --surface-strong: #fffaf2;
+  --line: rgba(54, 41, 31, 0.14);
+  --line-strong: rgba(54, 41, 31, 0.22);
+  --text: #1d1712;
+  --muted: #625549;
+  --accent: #d35f2e;
+  --accent-strong: #a54219;
+  --shadow: 0 28px 80px rgba(63, 46, 31, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(211, 95, 46, 0.2), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(33, 91, 109, 0.18), transparent 26%),
+    linear-gradient(180deg, #f9f5ed 0%, var(--bg) 100%);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+code,
+pre {
+  font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
+}
+
+.app-shell {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 3rem;
+}
+
+.intro-panel {
+  padding: 1rem 0 2rem;
+  max-width: 38rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+.intro-panel h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 6vw, 4.8rem);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+}
+
+.intro-copy {
+  margin: 1.2rem 0 0;
+  max-width: 34rem;
+  font-size: 1.06rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.intro-list {
+  margin: 1.2rem 0 0;
+  padding-left: 1.2rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.workspace {
+  backdrop-filter: blur(22px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 2rem;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.mode-switch {
+  display: inline-flex;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.mode-button {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0.78rem 1.1rem;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.mode-button:hover,
+.mode-button:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--line-strong);
+  outline: none;
+}
+
+.mode-button.is-active {
+  background: var(--surface-strong);
+  border-color: var(--line-strong);
+  color: var(--text);
+}
+
+.workspace-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  border-top: 1px solid var(--line);
+}
+
+.generator-form,
+.preview-panel {
+  padding: 1.5rem;
+}
+
+.generator-form {
+  border-right: 1px solid var(--line);
+}
+
+.field-group {
+  display: grid;
+  gap: 1rem;
+  animation: rise 240ms ease;
+}
+
+.field-group[hidden] {
+  display: none;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.field-label {
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.field input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 0.95rem 1rem;
+  color: var(--text);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.field input::placeholder {
+  color: rgba(98, 85, 73, 0.66);
+}
+
+.field input:hover,
+.field input:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(211, 95, 46, 0.12);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.field-hint {
+  margin: -0.1rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.generate-button {
+  margin-top: 1.5rem;
+  width: 100%;
+  border: none;
+  border-radius: 1rem;
+  padding: 1rem 1.2rem;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.generate-button:hover,
+.generate-button:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 36px rgba(163, 66, 25, 0.22);
+  outline: none;
+}
+
+.status-message {
+  min-height: 1.5rem;
+  margin: 0.9rem 0 0;
+  color: var(--muted);
+}
+
+.status-message.is-error {
+  color: #a72222;
+}
+
+.preview-panel {
+  display: grid;
+  gap: 1.2rem;
+  align-content: start;
+}
+
+.preview-frame,
+.payload-panel {
+  border: 1px solid var(--line);
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.preview-frame {
+  display: grid;
+  place-items: center;
+  min-height: 24rem;
+  padding: 1.5rem;
+}
+
+.qr-output {
+  display: grid;
+  place-items: center;
+  width: min(100%, 22rem);
+  aspect-ratio: 1;
+  border-radius: 1.2rem;
+  background: white;
+  overflow: hidden;
+}
+
+.qr-output svg {
+  width: 100%;
+  height: 100%;
+}
+
+.empty-state {
+  max-width: 14rem;
+  text-align: center;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.payload-panel {
+  padding: 1rem;
+}
+
+.payload-label {
+  margin: 0 0 0.75rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+.payload-preview {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 920px) {
+  .workspace-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .generator-form {
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    width: min(100% - 1rem, 1180px);
+    padding: 1rem 0 2rem;
+  }
+
+  .intro-panel {
+    padding: 0.5rem 0 1.5rem;
+  }
+
+  .workspace {
+    border-radius: 1.5rem;
+  }
+
+  .mode-switch,
+  .generator-form,
+  .preview-panel {
+    padding: 1rem;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-frame {
+    min-height: 18rem;
+  }
+}

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QR Studio</title>
+    <link rel="stylesheet" href="./styles.css?v=20260424" />
+    <script defer src="./node_modules/qrcode-generator/dist/qrcode.js"></script>
+    <script defer src="./app.js?v=20260424"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="intro-panel">
+        <p class="eyebrow">QR Studio</p>
+        <h1>Generate QR codes for websites and contact cards.</h1>
+        <p class="intro-copy">
+          Switch between a direct website link and a vCard contact payload, then
+          render a scannable QR instantly in the browser.
+        </p>
+        <ul class="intro-list">
+          <li>Website mode normalizes links and generates a shareable URL QR.</li>
+          <li>Contact mode encodes your details as a vCard for phone scanners.</li>
+        </ul>
+      </section>
+
+      <section class="workspace" aria-label="QR generator">
+        <div class="mode-switch" role="tablist" aria-label="Generator type">
+          <button
+            class="mode-button is-active"
+            id="website-tab"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="website-fields"
+            data-mode="website"
+          >
+            Website
+          </button>
+          <button
+            class="mode-button"
+            id="contact-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="contact-fields"
+            data-mode="contact"
+          >
+            Contact
+          </button>
+        </div>
+
+        <div class="workspace-grid">
+          <form id="qr-form" class="generator-form" novalidate>
+            <section
+              class="field-group"
+              id="website-fields"
+              role="tabpanel"
+              aria-labelledby="website-tab"
+            >
+              <label class="field">
+                <span class="field-label">Website URL</span>
+                <input
+                  id="website-url"
+                  name="website-url"
+                  type="text"
+                  placeholder="example.com"
+                  autocomplete="off"
+                />
+              </label>
+              <p class="field-hint">
+                If you omit the scheme, <code>https://</code> is added
+                automatically.
+              </p>
+            </section>
+
+            <section
+              class="field-group"
+              id="contact-fields"
+              role="tabpanel"
+              aria-labelledby="contact-tab"
+              hidden
+            >
+              <label class="field">
+                <span class="field-label">Full name</span>
+                <input
+                  id="contact-name"
+                  name="contact-name"
+                  type="text"
+                  placeholder="Alex Morgan"
+                  autocomplete="name"
+                />
+              </label>
+
+              <div class="field-row">
+                <label class="field">
+                  <span class="field-label">Phone</span>
+                  <input
+                    id="contact-phone"
+                    name="contact-phone"
+                    type="tel"
+                    placeholder="+49 1512 3456789"
+                    autocomplete="tel"
+                  />
+                </label>
+                <label class="field">
+                  <span class="field-label">Email</span>
+                  <input
+                    id="contact-email"
+                    name="contact-email"
+                    type="email"
+                    placeholder="alex@example.com"
+                    autocomplete="email"
+                  />
+                </label>
+              </div>
+
+              <div class="field-row">
+                <label class="field">
+                  <span class="field-label">Company</span>
+                  <input
+                    id="contact-company"
+                    name="contact-company"
+                    type="text"
+                    placeholder="Northline Studio"
+                    autocomplete="organization"
+                  />
+                </label>
+                <label class="field">
+                  <span class="field-label">Job title</span>
+                  <input
+                    id="contact-title"
+                    name="contact-title"
+                    type="text"
+                    placeholder="Product Designer"
+                    autocomplete="organization-title"
+                  />
+                </label>
+              </div>
+
+              <label class="field">
+                <span class="field-label">Website</span>
+                <input
+                  id="contact-website"
+                  name="contact-website"
+                  type="text"
+                  placeholder="portfolio.example.com"
+                  autocomplete="url"
+                />
+              </label>
+            </section>
+
+            <button class="generate-button" type="submit">Generate QR Code</button>
+            <p class="status-message" id="status-message" role="status" aria-live="polite">
+              Ready for a website URL.
+            </p>
+          </form>
+
+          <section class="preview-panel" aria-label="QR preview">
+            <div class="preview-frame">
+              <div class="qr-output" id="qr-output">
+                <p class="empty-state">Your QR code will appear here.</p>
+              </div>
+            </div>
+            <div class="payload-panel">
+              <p class="payload-label">Encoded payload</p>
+              <pre class="payload-preview" id="payload-preview">No payload generated yet.</pre>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
