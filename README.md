@@ -76,7 +76,3 @@ This app is intentionally branded as private-by-default:
 - No form submission to an app backend
 - No cookies
 - No analytics scripts
-
-## License
-
-No license file is included yet. Add one before distributing under a specific open source license.
