@@ -206,17 +206,17 @@ function buildEmailPayload() {
   );
   const subject = inputs.emailSubject.value.trim();
   const body = inputs.emailBody.value.trim();
-  const params = new URLSearchParams();
+  const parts = [];
 
   if (subject) {
-    params.set("subject", subject);
+    parts.push(`subject=${encodeURIComponent(subject)}`);
   }
 
   if (body) {
-    params.set("body", body);
+    parts.push(`body=${encodeURIComponent(body)}`);
   }
 
-  const query = params.toString();
+  const query = parts.join("&");
 
   return query ? `mailto:${recipient}?${query}` : `mailto:${recipient}`;
 }
