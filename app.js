@@ -49,6 +49,9 @@ const form = document.getElementById("qr-form");
 const output = document.getElementById("qr-output");
 const payloadPreview = document.getElementById("payload-preview");
 const statusMessage = document.getElementById("status-message");
+const downloadButton = document.getElementById("download-qr");
+
+const DOWNLOAD_SIZE_PX = 1024;
 
 const inputs = {
   urlValue: document.getElementById("url-value"),
@@ -99,6 +102,18 @@ form.addEventListener("submit", (event) => {
   } catch (error) {
     setStatus(error.message, true);
   }
+});
+
+downloadButton.addEventListener("click", () => {
+  const svg = output.querySelector("svg");
+
+  if (!svg) {
+    return;
+  }
+
+  downloadSvgAsPng(svg, `qr-${activeMode}.png`).catch((error) => {
+    setStatus(error.message || "Could not download the QR code.", true);
+  });
 });
 
 function setMode(mode) {
@@ -311,11 +326,68 @@ function renderQrCode(payload) {
       `QR code for ${modeConfig[activeMode].label.toLowerCase()}`
     );
   }
+
+  downloadButton.hidden = !svg;
 }
 
 function resetPreview() {
   output.innerHTML = '<p class="empty-state">Your QR code will appear here.</p>';
   payloadPreview.textContent = "No payload generated yet.";
+  downloadButton.hidden = true;
+}
+
+function downloadSvgAsPng(svg, filename) {
+  return new Promise((resolve, reject) => {
+    const clone = svg.cloneNode(true);
+
+    if (!clone.getAttribute("xmlns")) {
+      clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    }
+
+    const svgString = new XMLSerializer().serializeToString(clone);
+    const svgUrl = URL.createObjectURL(
+      new Blob([svgString], { type: "image/svg+xml;charset=utf-8" })
+    );
+
+    const image = new Image();
+
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = DOWNLOAD_SIZE_PX;
+      canvas.height = DOWNLOAD_SIZE_PX;
+
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+      URL.revokeObjectURL(svgUrl);
+
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          reject(new Error("Could not generate PNG."));
+          return;
+        }
+
+        const pngUrl = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = pngUrl;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(pngUrl);
+        resolve();
+      }, "image/png");
+    };
+
+    image.onerror = () => {
+      URL.revokeObjectURL(svgUrl);
+      reject(new Error("Could not render the QR code for download."));
+    };
+
+    image.src = svgUrl;
+  });
 }
 
 function setStatus(message, isError = false) {

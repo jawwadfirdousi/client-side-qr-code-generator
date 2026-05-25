@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QR Studio</title>
-    <link rel="stylesheet" href="./styles.css?v=20260424e" />
+    <link rel="stylesheet" href="./styles.css?v=20260525a" />
     <script defer src="./node_modules/qrcode-generator/dist/qrcode.js"></script>
-    <script defer src="./app.js?v=20260424c"></script>
+    <script defer src="./app.js?v=20260525a"></script>
   </head>
   <body>
     <main class="app-shell">
@@ -406,6 +406,14 @@
                 <p class="empty-state">Your QR code will appear here.</p>
               </div>
             </div>
+            <button
+              class="download-button"
+              id="download-qr"
+              type="button"
+              hidden
+            >
+              Download PNG
+            </button>
             <div class="payload-panel">
               <p class="payload-label">Encoded payload</p>
               <pre class="payload-preview" id="payload-preview">No payload generated yet.</pre>
